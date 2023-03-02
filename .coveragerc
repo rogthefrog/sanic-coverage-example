@@ -1,0 +1,42 @@
+# .coveragerc to control coverage.py
+[run]
+branch = True
+command_line = -m pytest -W ignore::DeprecationWarning -W ignore::UserWarning --cov=. --cov-reset --cov-report=html tests
+
+# we are omitting weird non-existent files from the sanic package due to a bug in coverage
+# https://github.com/nedbat/coveragepy/issues/1392
+# you will probably need to modify that list as the sanic library gets updated
+omit =
+    */tests/*
+    # */*.pyc
+    # */venv/*
+    # */__pycache__/*
+    # */viztel/_run_request_middleware
+    # */viztel/_run_response_middleware
+    # */viztel/connection_task
+    # */viztel/handle_request
+    # */viztel/handle_response
+    # */viztel/handle_exception
+    # */viztel/http1_request_header
+    # */viztel/http1_response_header
+    # */viztel/read
+    # */viztel/send
+
+[report]
+# Regexes for lines to exclude from consideration
+exclude_lines =
+    # Have to re-enable the standard pragma
+    pragma: no cover
+
+    # Don't complain about missing debug-only code:
+    def __repr__
+    if self\.debug
+
+    # Don't complain if tests don't hit defensive assertion code:
+    raise NotImplementedError
+
+    # Don't complain about abstract methods, they aren't run:
+    @(abc\.)?abstractmethod
+
+ignore_errors = True
+skip_covered = True
